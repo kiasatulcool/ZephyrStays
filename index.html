@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZephyrStays — Luxury Eco-Resort, Coorg</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    :root {
+      --bg: #faf8f4;
+      --green: #3d6b4f;
+      --green-dark: #2c5039;
+      --green-light: #5a8f6d;
+      --beige: #e8dcc8;
+      --beige-light: #f4efe6;
+      --text: #1a1a1a;
+      --text-muted: #6b6560;
+      --white: #ffffff;
+      --glass-bg: rgba(255,255,255,0.55);
+      --glass-border: rgba(255,255,255,0.7);
+      --shadow: 0 8px 40px rgba(61,107,79,0.10);
+      --shadow-lg: 0 20px 60px rgba(61,107,79,0.18);
+      --radius: 18px;
+      --radius-sm: 10px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    h1,h2,h3,h4,h5 { font-family: 'Playfair Display', serif; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--beige-light); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 10px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section-label { font-family: 'Lato',sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--green); margin-bottom: 14px; }
+    .section-title { font-size: clamp(2rem,4vw,3rem); font-weight: 600; line-height: 1.2; color: var(--text); margin-bottom: 16px; }
+    .section-sub { font-size: 1.05rem; color: var(--text-muted); line-height: 1.7; max-width: 520px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 50px; font-family: 'Lato',sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; border: none; transition: var(--transition); position: relative; overflow: hidden; }
+    .btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0.15); opacity:0; transition:var(--transition); }
+    .btn:hover::after { opacity:1; }
+    .btn-primary { background: var(--green); color: var(--white); box-shadow: 0 4px 20px rgba(61,107,79,0.35); }
+    .btn-primary:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,107,79,0.4); }
+    .btn-outline { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,0.7); }
+    .btn-outline:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .btn-outline-green { background: transparent; color: var(--green); border: 2px solid var(--green); }
+    .btn-outline-green:hover { background: var(--green); color: var(--white); transform: translateY(-2px); }
+    .fade-in { opacity:0; transform:translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity:1; transform:translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+
+    /* NAVBAR */
+    #navbar { position:fixed; top:0; left:0; right:0; z-index:1000; padding:18px 0; background:rgba(250,248,244,0.92); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid rgba(232,220,200,0.5); transition: box-shadow 0.3s ease, padding 0.3s ease; }
+    #navbar.scrolled { box-shadow: 0 4px 24px rgba(61,107,79,0.10); padding: 12px 0; }
+    .nav-inner { display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--green); letter-spacing:-0.02em; }
+    .nav-logo span { color:var(--text); }
+    .nav-links { display:flex; align-items:center; gap:32px; }
+    .nav-links a { font-size:0.87rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); transition:color 0.2s; position:relative; }
+    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:2px; background:var(--green); border-radius:2px; transition:width 0.3s ease; }
+    .nav-links a:hover { color:var(--green); }
+    .nav-links a:hover::after { width:100%; }
+    .nav-cta { margin-left:8px; padding:10px 22px; font-size:0.82rem; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:var(--transition); }
+    .hamburger.active span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity:0; }
+    .hamburger.active span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(250,248,244,0.98); z-index:999; flex-direction:column; align-items:center; justify-content:center; gap:36px; }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-family:'Playfair Display',serif; font-size:2rem; color:var(--text); transition:color 0.2s; }
+    .mobile-menu a:hover { color:var(--green); }
+
+    /* HERO */
+    #hero { min-height:100vh; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .hero-bg { position:absolute; inset:0; background: radial-gradient(ellipse at 20% 80%, rgba(61,107,79,0.85) 0%, transparent 55%), radial-gradient(ellipse at 80% 20%, rgba(44,80,57,0.75) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(90,143,109,0.4) 0%, transparent 70%), linear-gradient(160deg, #1c3d28 0%, #2c5039 30%, #3d6b4f 55%, #7ab5a0 80%, #b8d8e8 100%); }
+    .hero-trees { position:absolute; bottom:0; left:0; right:0; height:40%; background: radial-gradient(ellipse at 10% 100%, #0f2318 30%, transparent 60%), radial-gradient(ellipse at 25% 100%, #162d1f 25%, transparent 55%), radial-gradient(ellipse at 40% 100%, #0f2318 28%, transparent 58%), radial-gradient(ellipse at 60% 100%, #162d1f 25%, transparent 55%), radial-gradient(ellipse at 75% 100%, #0f2318 30%, transparent 60%), radial-gradient(ellipse at 90% 100%, #162d1f 25%, transparent 55%); }
+    .hero-mist { position:absolute; bottom:25%; left:0; right:0; height:150px; background: linear-gradient(to top, rgba(184,216,232,0.2) 0%, transparent 100%); filter:blur(8px); }
+    .hero-particles { position:absolute; inset:0; overflow:hidden; }
+    .particle { position:absolute; border-radius:50%; background:rgba(255,255,255,0.5); animation:float-particle linear infinite; }
+    @keyframes float-particle { 0% { transform:translateY(100vh) scale(0); opacity:0; } 10% { opacity:1; } 90% { opacity:0.6; } 100% { transform:translateY(-20px) scale(1); opacity:0; } }
+    .hero-content { position:relative; z-index:2; text-align:center; padding:0 24px; max-width:800px; }
+    .hero-eyebrow { display:inline-block; font-family:'Lato',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.3); padding:6px 18px; border-radius:50px; margin-bottom:28px; backdrop-filter:blur(8px); animation:fadeDown 0.8s ease both; }
+    .hero-title { font-size:clamp(2.6rem,7vw,5.2rem); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:20px; text-shadow:0 2px 20px rgba(0,0,0,0.3); animation:fadeDown 0.9s 0.15s ease both; }
+    .hero-title em { font-style:italic; color:rgba(255,255,255,0.85); }
+    .hero-subtitle { font-size:1.1rem; color:rgba(255,255,255,0.78); line-height:1.7; margin-bottom:40px; font-weight:300; animation:fadeDown 1s 0.3s ease both; }
+    .hero-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; animation:fadeDown 1.1s 0.45s ease both; }
+    .hero-scroll { position:absolute; bottom:36px; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px; color:rgba(255,255,255,0.6); font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; }
+    .scroll-line { width:1px; height:44px; background:linear-gradient(to bottom, rgba(255,255,255,0.7), transparent); animation:scroll-drip 2s infinite; }
+    @keyframes scroll-drip { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+
+    /* DIVIDERS */
+    .section-divider { height:80px; background:linear-gradient(to bottom, var(--beige-light), var(--bg)); }
+    .section-divider-inv { height:80px; background:linear-gradient(to bottom, var(--bg), var(--beige-light)); }
+
+    /* ROOMS */
+    #rooms { padding:80px 0 100px; background:var(--bg); }
+    .rooms-header { text-align:center; margin-bottom:60px; }
+    .rooms-header .section-sub { margin:0 auto; }
+    .rooms-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr)); gap:28px; }
+    .room-card { background:var(--glass-bg); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid var(--glass-border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition:transform var(--transition), box-shadow var(--transition); }
+    .room-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-lg); }
+    .room-image { height:220px; position:relative; overflow:hidden; }
+    .room-image-inner { position:absolute; inset:0; transition:transform 0.5s ease; }
+    .room-card:hover .room-image-inner { transform:scale(1.05); }
+    .room-img-forest { background:linear-gradient(135deg, #1c3d28 0%, #2c5039 40%, #5a8f6d 70%, #a8c8a8 100%); }
+    .room-img-hilltop { background:linear-gradient(135deg, #2c3e50 0%, #3d6b4f 40%, #7ab5a0 70%, #c9e0e8 100%); }
+    .room-img-villa { background:linear-gradient(135deg, #3d2c1e 0%, #6b4f3d 40%, #c8a878 70%, #e8dcc8 100%); }
+    .room-img-label { position:absolute; bottom:14px; left:14px; background:rgba(0,0,0,0.45); backdrop-filter:blur(8px); color:white; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; padding:5px 12px; border-radius:50px; }
+    .room-badge { position:absolute; top:14px; right:14px; background:var(--green); color:white; font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:5px 12px; border-radius:50px; }
+    .room-body { padding:24px; }
+    .room-name { font-size:1.4rem; font-weight:600; margin-bottom:6px; }
+    .room-desc { font-size:0.88rem; color:var(--text-muted); line-height:1.65; margin-bottom:16px; }
+    .room-features { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+    .feature-pill { display:flex; align-items:center; gap:5px; background:rgba(61,107,79,0.08); border:1px solid rgba(61,107,79,0.12); padding:5px 12px; border-radius:50px; font-size:0.78rem; color:var(--green-dark); font-weight:700; }
+    .room-footer { display:flex; align-items:center; justify-content:space-between; padding-top:16px; border-top:1px solid rgba(232,220,200,0.8); }
+    .room-price { font-family:'Playfair Display',serif; }
+    .room-price .amount { font-size:1.7rem; font-weight:700; color:var(--green); }
+    .room-price .per { font-size:0.78rem; color:var(--text-muted); display:block; }
+
+    /* EXPERIENCES */
+    #experiences { padding:90px 0 100px; background:var(--beige-light); }
+    .exp-header { text-align:center; margin-bottom:60px; }
+    .exp-header .section-sub { margin:0 auto; }
+    .exp-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:20px; }
+    .exp-card { background:var(--glass-bg); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--glass-border); border-radius:var(--radius); padding:30px 24px; text-align:center; transition:transform var(--transition), box-shadow var(--transition); }
+    .exp-card:hover { transform:translateY(-6px); box-shadow:var(--shadow); }
+    .exp-icon { width:64px; height:64px; margin:0 auto 18px; background:linear-gradient(135deg, rgba(61,107,79,0.12), rgba(61,107,79,0.22)); border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; border:1px solid rgba(61,107,79,0.15); transition:transform 0.3s ease; }
+    .exp-card:hover .exp-icon { transform:scale(1.1) rotate(-3deg); }
+    .exp-title { font-size:1.1rem; font-weight:600; margin-bottom:8px; }
+    .exp-desc { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+
+    /* BOOKING */
+    #booking { padding:100px 0; background:var(--bg); position:relative; overflow:hidden; }
+    .booking-bg-circle { position:absolute; border-radius:50%; background:radial-gradient(circle, rgba(61,107,79,0.06) 0%, transparent 70%); }
+    .booking-bg-circle-1 { width:600px; height:600px; top:-200px; right:-200px; }
+    .booking-bg-circle-2 { width:500px; height:500px; bottom:-200px; left:-150px; }
+    .booking-card { position:relative; z-index:2; max-width:860px; margin:0 auto; background:var(--glass-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid var(--glass-border); border-radius:24px; padding:52px 48px; box-shadow:var(--shadow-lg); text-align:center; }
+    .booking-title { font-size:2.2rem; margin-bottom:10px; }
+    .booking-sub { color:var(--text-muted); font-size:0.95rem; margin-bottom:40px; }
+    .booking-fields { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:16px; margin-bottom:28px; }
+    .field-group { text-align:left; }
+    .field-group label { display:block; font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+    .field-group input, .field-group select { width:100%; padding:13px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--beige); background:rgba(255,255,255,0.7); font-family:'Lato',sans-serif; font-size:0.92rem; color:var(--text); outline:none; transition:border-color 0.2s, box-shadow 0.2s; appearance:none; -webkit-appearance:none; }
+    .field-group select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b6560' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; }
+    .field-group input:focus, .field-group select:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(61,107,79,0.12); }
+    .btn-book { padding:16px 44px; font-size:1rem; border-radius:50px; }
+    .btn-book-ripple { position:absolute; border-radius:50%; background:rgba(255,255,255,0.3); transform:scale(0); animation:ripple 0.6s linear; pointer-events:none; }
+    @keyframes ripple { to { transform:scale(4); opacity:0; } }
+    .booking-trust { display:flex; justify-content:center; gap:28px; margin-top:24px; flex-wrap:wrap; }
+    .trust-item { display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-muted); }
+    .trust-icon { color:var(--green); }
+
+    /* GALLERY */
+    #gallery { padding:90px 0 100px; background:var(--beige-light); }
+    .gallery-header { text-align:center; margin-bottom:52px; }
+    .gallery-grid { display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:180px; gap:14px; }
+    .gallery-item { border-radius:14px; overflow:hidden; position:relative; cursor:pointer; }
+    .gallery-item-inner { position:absolute; inset:0; transition:transform 0.5s ease; }
+    .gallery-item:hover .gallery-item-inner { transform:scale(1.06); }
+    .gallery-item-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%); opacity:0; transition:opacity 0.3s ease; display:flex; align-items:flex-end; padding:14px; }
+    .gallery-item:hover .gallery-item-overlay { opacity:1; }
+    .gallery-label { color:white; font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
+    .g-span-2c { grid-column:span 2; }
+    .g-span-2r { grid-row:span 2; }
+    .g-span-2c.g-span-2r { grid-column:span 2; grid-row:span 2; }
+    .g1 { background:linear-gradient(135deg, #1c3d28, #5a8f6d); }
+    .g2 { background:linear-gradient(135deg, #2c3e50, #7ab5a0); }
+    .g3 { background:linear-gradient(135deg, #4a3520, #c8a878); }
+    .g4 { background:linear-gradient(135deg, #1a2f1a, #3d6b4f, #a8d4b8); }
+    .g5 { background:linear-gradient(135deg, #2c2c3e, #6b5a8f); }
+    .g6 { background:linear-gradient(135deg, #3d2c1e, #8f6b3d, #e0c88a); }
+    .g7 { background:linear-gradient(135deg, #1c2c3d, #3d6b8f, #b0d4e8); }
+    .g8 { background:linear-gradient(135deg, #1a1a1a, #3d4f3d, #7ab87a); }
+
+    /* TESTIMONIALS */
+    #testimonials { padding:100px 0; background:var(--bg); }
+    .test-header { text-align:center; margin-bottom:60px; }
+    .test-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:24px; }
+    .test-card { background:var(--glass-bg); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--glass-border); border-radius:var(--radius); padding:36px 30px; position:relative; box-shadow:var(--shadow); transition:transform var(--transition); }
+    .test-card:hover { transform:translateY(-5px); }
+    .test-card::before { content:''; position:absolute; top:0; left:24px; right:24px; height:3px; background:linear-gradient(to right, transparent, var(--green), transparent); border-radius:0 0 3px 3px; opacity:0.6; }
+    .test-quote-mark { font-family:'Playfair Display',serif; font-size:5rem; line-height:0.7; color:var(--green); opacity:0.2; margin-bottom:12px; display:block; }
+    .test-text { font-size:1rem; line-height:1.75; color:var(--text); font-style:italic; margin-bottom:24px; }
+    .test-footer { display:flex; align-items:center; gap:14px; }
+    .test-avatar { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:600; color:white; flex-shrink:0; }
+    .av-1 { background:linear-gradient(135deg, #3d6b4f, #7ab5a0); }
+    .av-2 { background:linear-gradient(135deg, #6b3d4f, #c87aab); }
+    .av-3 { background:linear-gradient(135deg, #3d4f6b, #7a9ab5); }
+    .test-name { font-weight:700; font-size:0.95rem; }
+    .test-origin { font-size:0.8rem; color:var(--text-muted); }
+    .test-stars { color:#f0b429; font-size:0.85rem; letter-spacing:2px; margin-left:auto; }
+
+    /* FOOTER */
+    #footer { background:var(--text); color:rgba(255,255,255,0.75); padding:70px 0 32px; }
+    .footer-inner { display:grid; grid-template-columns:1.8fr repeat(3,1fr); gap:48px; padding-bottom:52px; border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom:32px; }
+    .footer-brand .nav-logo { color:rgba(255,255,255,0.9); margin-bottom:14px; display:block; }
+    .footer-brand .nav-logo span { color:var(--beige); }
+    .footer-tagline { font-size:0.88rem; line-height:1.7; margin-bottom:22px; max-width:260px; }
+    .footer-socials { display:flex; gap:12px; }
+    .social-btn { width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:0.95rem; transition:background 0.2s, transform 0.2s; cursor:pointer; }
+    .social-btn:hover { background:var(--green); transform:translateY(-3px); }
+    .footer-col h4 { font-family:'Lato',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:18px; }
+    .footer-col ul { display:flex; flex-direction:column; gap:10px; }
+    .footer-col ul li a { font-size:0.9rem; color:rgba(255,255,255,0.65); transition:color 0.2s; }
+    .footer-col ul li a:hover { color:var(--beige); }
+    .footer-address { font-size:0.88rem; line-height:1.8; }
+    .footer-address strong { color:rgba(255,255,255,0.9); display:block; margin-bottom:6px; }
+    .footer-bottom { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:0.8rem; color:rgba(255,255,255,0.35); }
+    .footer-bottom a { color:rgba(255,255,255,0.5); transition:color 0.2s; }
+    .footer-bottom a:hover { color:var(--beige); }
+
+    /* BACK TO TOP */
+    #back-to-top { position:fixed; bottom:28px; right:28px; width:48px; height:48px; background:var(--green); color:white; border:none; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; cursor:pointer; box-shadow:0 4px 20px rgba(61,107,79,0.4); opacity:0; transform:translateY(20px); transition:opacity 0.3s, transform 0.3s; z-index:500; }
+    #back-to-top.show { opacity:1; transform:translateY(0); }
+    #back-to-top:hover { background:var(--green-dark); transform:translateY(-2px) !important; }
+
+    /* RESPONSIVE */
+    @media (max-width:900px) { .footer-inner { grid-template-columns:1fr 1fr; } }
+    @media (max-width:768px) {
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .gallery-grid { grid-template-columns:repeat(2,1fr); grid-auto-rows:140px; }
+      .g-span-2r { grid-row:span 1; }
+      .booking-card { padding:36px 24px; }
+      .footer-inner { grid-template-columns:1fr; gap:32px; }
+    }
+    @media (max-width:480px) {
+      .hero-btns { flex-direction:column; align-items:center; }
+      .rooms-grid { grid-template-columns:1fr; }
+      .gallery-grid { grid-auto-rows:120px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo">Zephyr<span>Stays</span></a>
+    <ul class="nav-links">
+      <li><a href="#rooms">Rooms</a></li>
+      <li><a href="#experiences">Experiences</a></li>
+      <li><a href="#booking">Dining</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#footer">Contact</a></li>
+      <li><a href="#booking" class="btn btn-primary nav-cta">Book Now</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#rooms" class="mob-link">Rooms</a>
+  <a href="#experiences" class="mob-link">Experiences</a>
+  <a href="#booking" class="mob-link">Dining</a>
+  <a href="#gallery" class="mob-link">Gallery</a>
+  <a href="#footer" class="mob-link">Contact</a>
+  <a href="#booking" class="btn btn-primary">Book Now</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-trees"></div>
+  <div class="hero-mist"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">✦ Coorg, Karnataka, India</span>
+    <h1 class="hero-title">Where Nature<br><em>Meets Luxury</em></h1>
+    <p class="hero-subtitle">Nestled in the misty highlands of Coorg, ZephyrStays offers an unparalleled retreat where every breath of mountain air is a luxury in itself.</p>
+    <div class="hero-btns">
+      <a href="#rooms" class="btn btn-primary">Explore Rooms →</a>
+      <a href="#booking" class="btn btn-outline">Book Your Stay</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ROOMS -->
+<section id="rooms">
+  <div class="container">
+    <div class="rooms-header fade-in">
+      <p class="section-label">Accommodations</p>
+      <h2 class="section-title">Curated Stays for<br>the Discerning Traveller</h2>
+      <p class="section-sub">Each room is a sanctuary — thoughtfully designed to bring you closer to nature without compromising on modern comforts.</p>
+    </div>
+    <div class="rooms-grid">
+      <div class="room-card fade-in fade-in-delay-1">
+        <div class="room-image">
+          <div class="room-image-inner room-img-forest"></div>
+          <span class="room-img-label">Forest View</span>
+          <span class="room-badge">Popular</span>
+        </div>
+        <div class="room-body">
+          <h3 class="room-name">Forest Cottage</h3>
+          <p class="room-desc">A cosy cottage enveloped by towering coffee and spice plantations. Wake up to birdsong and morning mist rolling through the valley.</p>
+          <div class="room-features">
+            <span class="feature-pill">📶 Free WiFi</span>
+            <span class="feature-pill">❄️ Air Conditioned</span>
+            <span class="feature-pill">🌿 Forest View</span>
+            <span class="feature-pill">☕ Mini Bar</span>
+          </div>
+          <div class="room-footer">
+            <div class="room-price">
+              <span class="amount">₹8,499</span>
+              <span class="per">per night · incl. breakfast</span>
+            </div>
+            <a href="#booking" class="btn btn-outline-green">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card fade-in fade-in-delay-2">
+        <div class="room-image">
+          <div class="room-image-inner room-img-hilltop"></div>
+          <span class="room-img-label">Panoramic View</span>
+          <span class="room-badge" style="background:#6b4f3d">Signature</span>
+        </div>
+        <div class="room-body">
+          <h3 class="room-name">Hilltop Suite</h3>
+          <p class="room-desc">Perched at the resort's highest point with 270° panoramic views of the Western Ghats — the perfect honeymoon or anniversary retreat.</p>
+          <div class="room-features">
+            <span class="feature-pill">📶 Free WiFi</span>
+            <span class="feature-pill">🛁 Bathtub</span>
+            <span class="feature-pill">🏡 Private Deck</span>
+            <span class="feature-pill">🍷 Butler Service</span>
+          </div>
+          <div class="room-footer">
+            <div class="room-price">
+              <span class="amount">₹14,999</span>
+              <span class="per">per night · incl. all meals</span>
+            </div>
+            <a href="#booking" class="btn btn-outline-green">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card fade-in fade-in-delay-3">
+        <div class="room-image">
+          <div class="room-image-inner room-img-villa"></div>
+          <span class="room-img-label">Private Pool</span>
+          <span class="room-badge" style="background:#1a1a1a">Ultra Luxury</span>
+        </div>
+        <div class="room-body">
+          <h3 class="room-name">Premium Villa</h3>
+          <p class="room-desc">An exclusive private villa with a plunge pool, open-air living area, and your own slice of the jungle — complete seclusion for the elite traveller.</p>
+          <div class="room-features">
+            <span class="feature-pill">🏊 Plunge Pool</span>
+            <span class="feature-pill">🛁 Outdoor Bath</span>
+            <span class="feature-pill">🍽️ In-villa Dining</span>
+            <span class="feature-pill">🚗 Private Transfer</span>
+          </div>
+          <div class="room-footer">
+            <div class="room-price">
+              <span class="amount">₹28,000</span>
+              <span class="per">per night · full board</span>
+            </div>
+            <a href="#booking" class="btn btn-outline-green">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider-inv"></div>
+
+<!-- EXPERIENCES -->
+<section id="experiences">
+  <div class="container">
+    <div class="exp-header fade-in">
+      <p class="section-label">Curated Experiences</p>
+      <h2 class="section-title">Beyond the Room</h2>
+      <p class="section-sub">From misty forest trails to crackling bonfires — every day at ZephyrStays is a new story waiting to be written.</p>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card fade-in fade-in-delay-1">
+        <div class="exp-icon">🌿</div>
+        <h4 class="exp-title">Nature Trails</h4>
+        <p class="exp-desc">Guided walks through ancient spice and coffee plantations with our resident naturalist. Discover flora you won't find in any textbook.</p>
+      </div>
+      <div class="exp-card fade-in fade-in-delay-2">
+        <div class="exp-icon">🦅</div>
+        <h4 class="exp-title">Bird Watching</h4>
+        <p class="exp-desc">Coorg is home to 300+ bird species. Dawn excursions with binoculars and field guides — a treat for ornithology enthusiasts.</p>
+      </div>
+      <div class="exp-card fade-in fade-in-delay-3">
+        <div class="exp-icon">💧</div>
+        <h4 class="exp-title">Waterfall Trek</h4>
+        <p class="exp-desc">A 3km trail through dense jungle leads to a pristine hidden waterfall. Perfect for thrill-seekers and photographers alike.</p>
+      </div>
+      <div class="exp-card fade-in fade-in-delay-1">
+        <div class="exp-icon">🔥</div>
+        <h4 class="exp-title">Bonfire Nights</h4>
+        <p class="exp-desc">Gather under a canopy of stars around a crackling bonfire. Roasted marshmallows, folk music, and the scent of the forest — pure magic.</p>
+      </div>
+      <div class="exp-card fade-in fade-in-delay-2">
+        <div class="exp-icon">🧘</div>
+        <h4 class="exp-title">Yoga Sessions</h4>
+        <p class="exp-desc">Morning yoga on our open-air deck overlooking the valley — start your day with clarity, breathwork, and the sound of birds awakening.</p>
+      </div>
+      <div class="exp-card fade-in fade-in-delay-3">
+        <div class="exp-icon">🍛</div>
+        <h4 class="exp-title">Local Cuisine Tour</h4>
+        <p class="exp-desc">Visit a Kodava home kitchen and learn the secrets of Coorg's legendary pork curry and Kadambuttu — a true cultural immersion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- BOOKING WIDGET -->
+<section id="booking">
+  <div class="booking-bg-circle booking-bg-circle-1"></div>
+  <div class="booking-bg-circle booking-bg-circle-2"></div>
+  <div class="container">
+    <div class="booking-card fade-in">
+      <p class="section-label" style="text-align:center">Reserve Your Escape</p>
+      <h2 class="booking-title">Check Availability</h2>
+      <p class="booking-sub">Select your dates and preferred accommodation to begin your ZephyrStays experience.</p>
+      <div class="booking-fields">
+        <div class="field-group">
+          <label for="checkin">Check-In Date</label>
+          <input type="date" id="checkin" name="checkin" />
+        </div>
+        <div class="field-group">
+          <label for="checkout">Check-Out Date</label>
+          <input type="date" id="checkout" name="checkout" />
+        </div>
+        <div class="field-group">
+          <label for="guests">Guests</label>
+          <select id="guests" name="guests">
+            <option value="">Select Guests</option>
+            <option>1 Guest</option>
+            <option selected>2 Guests</option>
+            <option>3 Guests</option>
+            <option>4 Guests</option>
+            <option>5+ Guests</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="roomtype">Room Type</label>
+          <select id="roomtype" name="roomtype">
+            <option value="">Select Room</option>
+            <option>Forest Cottage</option>
+            <option>Hilltop Suite</option>
+            <option>Premium Villa</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-book" id="bookBtn" onclick="handleBook(event)">
+        ✦ Check Availability
+      </button>
+      <div class="booking-trust">
+        <span class="trust-item"><span class="trust-icon">✓</span> Free cancellation up to 48 hrs</span>
+        <span class="trust-item"><span class="trust-icon">✓</span> Best price guarantee</span>
+        <span class="trust-item"><span class="trust-icon">✓</span> Instant confirmation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider-inv"></div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="gallery-header fade-in">
+      <p class="section-label">Visual Journal</p>
+      <h2 class="section-title">A Glimpse into Paradise</h2>
+    </div>
+    <div class="gallery-grid fade-in">
+      <div class="gallery-item g-span-2r">
+        <div class="gallery-item-inner g1"></div>
+        <div class="gallery-item-overlay"><span class="gallery-label">Misty Mornings</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner g2"></div>
+        <div class="gallery-item-overlay"><span class="gallery-label">Hilltop View</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner g3"></div>
+        <div class="gallery-item-overlay"><span class="gallery-label">Coffee Plantation</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner g4"></div>
+        <div class="gallery-item-overlay"><span class="gallery-label">Forest Trail</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner g5"></div>
+        <div class="gallery-item-overlay"><span class="gallery-label">Sunset Deck</span></div>
+      </div>
+      <div class="gallery-item g-span-2c">
+        <div class="gallery-item-inner g6"></div>
+        <div class="gallery-item-overlay"><span class="gallery-label">Plunge Pool Villa</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner g7"></div>
+        <div class="gallery-item-overlay"><span class="gallery-label">Hidden Waterfall</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-inner g8"></div>
+        <div class="gallery-item-overlay"><span class="gallery-label">Bonfire Night</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="test-header fade-in">
+      <p class="section-label">Guest Stories</p>
+      <h2 class="section-title">Words from Our Guests</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card fade-in fade-in-delay-1">
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">ZephyrStays redefined what a holiday could be. Waking up to misty valleys and birdsong every morning — I've never felt so grounded and at peace. The villa was extraordinary.</p>
+        <div class="test-footer">
+          <div class="test-avatar av-1">A</div>
+          <div>
+            <div class="test-name">Arjun & Meera Sharma</div>
+            <div class="test-origin">Mumbai, India</div>
+          </div>
+          <div class="test-stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="test-card fade-in fade-in-delay-2">
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">The local cuisine tour was the highlight of my entire trip. An authentic Kodava home kitchen, learning to cook with ingredients plucked from the garden — absolutely magical.</p>
+        <div class="test-footer">
+          <div class="test-avatar av-2">S</div>
+          <div>
+            <div class="test-name">Sophie Laurent</div>
+            <div class="test-origin">Lyon, France</div>
+          </div>
+          <div class="test-stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="test-card fade-in fade-in-delay-3">
+        <span class="test-quote-mark">"</span>
+        <p class="test-text">We've stayed at luxury resorts across Asia but ZephyrStays felt genuinely different. The staff remembered every preference, the nature trails were pristine, and the silence was healing.</p>
+        <div class="test-footer">
+          <div class="test-avatar av-3">D</div>
+          <div>
+            <div class="test-name">Dr. David Chen</div>
+            <div class="test-origin">Singapore</div>
+          </div>
+          <div class="test-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="nav-logo">Zephyr<span>Stays</span></span>
+        <p class="footer-tagline">A luxury eco-resort in the misty highlands of Coorg — where every detail is a gift from nature.</p>
+        <div class="footer-socials">
+          <div class="social-btn" title="Instagram">📷</div>
+          <div class="social-btn" title="Facebook">📘</div>
+          <div class="social-btn" title="Twitter">🐦</div>
+          <div class="social-btn" title="YouTube">▶</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#rooms">Rooms &amp; Suites</a></li>
+          <li><a href="#experiences">Experiences</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#booking">Reservations</a></li>
+          <li><a href="#booking">Dining Menu</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Policies</h4>
+        <ul>
+          <li><a href="#">Cancellation Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Accessibility</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="footer-address">
+          <strong>ZephyrStays Coorg</strong>
+          Madikeri Hills, Kodagu District<br>
+          Karnataka 571201, India<br><br>
+          📞 +91 98765 43210<br>
+          ✉️ hello@zephyrstays.in
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 ZephyrStays. All rights reserved.</span>
+      <span>Crafted with ♥ for conscious travellers</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<script>
+  // PARTICLES
+  (function() {
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const s = Math.random() * 4 + 1.5;
+      p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*12+10}s;animation-delay:${Math.random()*10}s;opacity:${Math.random()*0.6+0.2};`;
+      c.appendChild(p);
+    }
+  })();
+
+  // NAVBAR
+  const navbar = document.getElementById('navbar');
+  const backBtn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    navbar.classList.toggle('scrolled', y > 50);
+    backBtn.classList.toggle('show', y > 400);
+  });
+
+  // HAMBURGER
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mob-link, .mobile-menu .btn').forEach(el => {
+    el.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // FADE IN
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // BOOKING DATES
+  (function() {
+    const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    const ci = document.getElementById('checkin');
+    const co = document.getElementById('checkout');
+    ci.min = today; ci.value = today;
+    co.min = tomorrow; co.value = tomorrow;
+    ci.addEventListener('change', () => {
+      const nd = new Date(ci.value);
+      nd.setDate(nd.getDate() + 1);
+      co.min = nd.toISOString().split('T')[0];
+      if (new Date(co.value) <= new Date(ci.value)) co.value = nd.toISOString().split('T')[0];
+    });
+  })();
+
+  // BOOK BUTTON
+  function handleBook(e) {
+    const btn = document.getElementById('bookBtn');
+    const ci = document.getElementById('checkin').value;
+    const co = document.getElementById('checkout').value;
+    const g = document.getElementById('guests').value;
+    const r = document.getElementById('roomtype').value;
+
+    // Ripple
+    const ripple = document.createElement('span');
+    ripple.className = 'btn-book-ripple';
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height) * 2;
+    ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 650);
+
+    if (!g || !r) { showToast('⚠️ Please select guests and room type.', '#c0392b'); return; }
+
+    btn.textContent = '⌛ Checking Availability...';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = '✦ Check Availability';
+      btn.disabled = false;
+      const nights = Math.round((new Date(co) - new Date(ci)) / 86400000);
+      showToast(`✓ Available! Your ${nights}-night stay at ${r}. We'll confirm within 2 hours.`, '#3d6b4f');
+    }, 1800);
+  }
+
+  function showToast(msg, color) {
+    const existing = document.querySelector('.toast-notif');
+    if (existing) existing.remove();
+    const t = document.createElement('div');
+    t.className = 'toast-notif';
+    t.textContent = msg;
+    t.style.cssText = `position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:${color};color:white;padding:14px 24px;border-radius:12px;font-family:'Lato',sans-serif;font-size:0.9rem;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,0.2);z-index:9999;max-width:90vw;text-align:center;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0;`;
+    document.body.appendChild(t);
+    requestAnimationFrame(() => { t.style.transform = 'translateX(-50%) translateY(0)'; t.style.opacity = '1'; });
+    setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(10px)'; setTimeout(() => t.remove(), 350); }, 4000);
+  }
+</script>
+</body>
+</html>
